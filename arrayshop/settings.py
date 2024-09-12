@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     #my apps
     'shop.apps.ShopConfig',
     'cart.apps.CartConfig',
+    'orders.apps.OrdersConfig',
     #installed apps
      "debug_toolbar",
 ]

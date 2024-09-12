@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from shop import urls as shop_urls
 from cart import urls as cart_urls
+from orders import urls as orders_urls
 from django.conf import settings
 from django.conf.urls.static import static
 from debug_toolbar.toolbar import debug_toolbar_urls
@@ -26,6 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('shop/', include(shop_urls, namespace='shop')),
     path('cart/', include(cart_urls, namespace='cart')),
+    path('orders/', include(orders_urls, namespace='orders')),
 ] + debug_toolbar_urls()
 
 if settings.DEBUG:
