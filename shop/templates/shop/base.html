@@ -11,10 +11,20 @@
 <body>
     <header class="header">
         <div class="container-header">
-            <a href="/" class="logo"><img src="{% static 'img/logo.png' %}" alt=""></a>
+            <a href="{% url 'shop:product_list'%}" class="logo"><img src="{% static 'img/logo.png' %}" alt=""></a>
+            <a href="{% url 'cart:cart_detail' %}">
             <div class="cart-main">
+            {% with total_items=cart|length  %}
+            {% if total_items > 0 %}
+                {{ total_items }} item{{ total_items|pluralize }}
+                $ {{ cart.get_total_price }}
+            {% else %}
             Cart is empty
+            {% endif %}
+            {% endwith %}
             </div>
+        </a>
+
         </div>
     </header>
     <div id="content">

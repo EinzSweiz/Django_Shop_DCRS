@@ -25,8 +25,14 @@ SECRET_KEY = 'django-insecure-*e4@r1tf#ba$7mfau@floe_n5_vjtn_a&ud$v1=03w4*o^&j*x
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    'localhost'
+    # ...
+]
 
 # Application definition
 
@@ -39,6 +45,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #my apps
     'shop.apps.ShopConfig',
+    'cart.apps.CartConfig',
+    #installed apps
+     "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -49,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'arrayshop.urls'
@@ -64,6 +74,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processors.cart',
             ],
         },
     },
