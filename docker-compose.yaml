@@ -1,0 +1,72 @@
+version: '3.8'
+services:
+  web:
+    image: arrayshop
+    container_name: web
+    command: gunicorn arrayshop.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - rabbitmq
+    environment:
+      - DJANGO_SETTINGS_MODULE=arrayshop.settings
+      - CELERY_BROKER_URL=pyamqp://guest@rabbitmq//
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    networks:
+      - app-network
+  
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+  
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - app-network
+
+  celery:
+    image: arrayshop
+    container_name: celery
+    command: celery -A arrayshop.celery:app worker --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - rabbitmq
+    environment:
+      - DJANGO_SETTINGS_MODULE=arrayshop.settings
+      - CELERY_BROKER_URL=pyamqp://guest@rabbitmq//
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    restart: always
+    networks:
+      - app-network
+    
+  flower:
+    image: mher/flower:latest
+    container_name: flower
+    ports:
+      - "5555:5555"
+    depends_on:
+      - celery
+    environment:
+      - FLOWER_PORT=5555
+      - FLOWER_URL_PREFIX=flower
+      - FLOWER_BASIC_AUTH=admin:password
+    command: ["celery", "-A", "arrayshop.celery:app", "flower", "--port=5555"]
+    restart: always
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
