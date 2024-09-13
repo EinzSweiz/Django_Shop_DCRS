@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'shop.apps.ShopConfig',
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
+    'payment.apps.PaymentConfig',
     #installed apps
     "debug_toolbar",
 ]
@@ -94,12 +95,12 @@ DATABASES = {
     }
 }
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': 'redis://redis:6379/1',
-    }
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+#         'LOCATION': 'redis://redis:6379/1',
+#     }
+# }
 
 
 # Password validation
@@ -149,6 +150,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 CART_SESSION_ID = 'cart'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-import os
-CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'pyamqp://guest@rabbitmq//')
-CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', 'redis://redis:6379/0')
+# import os
+# CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'pyamqp://guest@rabbitmq//')
+# CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', 'redis://redis:6379/0')
+STRIPE_PUBLISHABLE_KEY = "pk_test_51PvFXfDKCJU8J1StmsHIvP8XmOUcl3jSCbUMz0jVVKz6WpYWAvnbLKSRXsaKz2jTAKRQEGWatVQAYxxff1wrcm3b002Axsi4fp"
+STRIPE_SECRET_KEY = 'sk_test_51PvFXfDKCJU8J1SteoVk2Ft7PB9W5fmgYy0ooXuGqsOrscfzkRLvfE9OtGRI3NmGDqdyHRDSyy0fp2Lts0XWiF0k00d8osOPMc'
+STRIPE_API_VERSION = '2022-08-01'

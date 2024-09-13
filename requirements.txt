@@ -25,3 +25,4 @@ wcwidth==0.2.13
 gunicorn
 redis
 flower
+stripe
